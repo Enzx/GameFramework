@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using GameFramework.Graph;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Behaviour = GameFramework.Actor.Behaviours.Behaviour;
+using Node = UnityEditor.Experimental.GraphView.Node;
 
 namespace GameFramework.Editor
 {
@@ -89,7 +93,7 @@ namespace GameFramework.Editor
             //Add the node to the graph view
             AddElement(stateNode);
         }
-        
+
         //Get compatible ports for a node to connect to another node
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
@@ -121,6 +125,8 @@ namespace GameFramework.Editor
 
     internal class StateNode : Node
     {
+        private readonly State _state;
+
         //Add rename functionality to the node 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
@@ -136,10 +142,12 @@ namespace GameFramework.Editor
                 OpenTextEditor();
             }
         }
-        
+
+
         //Add ports to the node
         public StateNode()
         {
+            _state = new State();
             //Create a port for the node
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi,
                 typeof(float));
@@ -154,6 +162,30 @@ namespace GameFramework.Editor
             outputPort.portName = "Output";
             //Add the port to the node
             outputContainer.Add(outputPort);
+
+            //Create a button
+            Button button = new Button(() => { AddAction(); });
+            //Set the text of the button
+            button.text = "Add Action";
+            //Add the button to the node
+            mainContainer.Add(button);
+
+            TypeCache.TypeCollection types = TypeCache.GetTypesDerivedFrom<ActionTask>();
+            Dictionary<string, System.Type> typeDictionary = new();
+            foreach (System.Type type in types)
+            {
+                typeDictionary.Add(type.Name, type);
+            }
+            PopupField<string> popupField = new(typeDictionary.Keys.ToList(),  0, key =>
+            {
+                mainContainer.  Add(new Label(key));
+                return key;
+            });
+            mainContainer.Add(popupField);
+        }
+
+        private void AddAction()
+        {
         }
 
 
