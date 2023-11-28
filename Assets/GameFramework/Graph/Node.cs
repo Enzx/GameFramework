@@ -2,7 +2,11 @@
 {
     public abstract class Node
     {
-        public NodeId Id;
+        public readonly NodeId Key = new()
+        {
+            Id = SerializableGuid.NewGuid()
+        };
+
         public abstract Result Execute();
     }
 }

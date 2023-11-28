@@ -42,5 +42,10 @@ namespace GameFramework.Collections
         {
             return _behaviorTypeMap.Get(typeof(T)) as T;
         }
+        
+        public void ForEach(Action<TType> action)
+        {
+            _behaviorTypeMap.ForEach(action);
+        }
     }
 }

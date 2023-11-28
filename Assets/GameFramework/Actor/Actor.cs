@@ -4,7 +4,6 @@ using GameFramework.Actor.View;
 using GameFramework.Collections;
 using GameFramework.Graph;
 using GameFramework.Messaging;
-using UnityEngine;
 
 namespace GameFramework.Actor
 {
@@ -16,11 +15,13 @@ namespace GameFramework.Actor
         public readonly Events Events;
 
         public readonly ActorView View;
+        public readonly IWorld World;
 
 
-        public Actor(ActorData entityData, ActorView entityView)
+        public Actor(ActorData entityData, ActorView entityView, IWorld world)
         {
             View = entityView;
+            World = world;
             Events = new Events();
             Behaviors = new ServiceLocator<IBehaviour>(entityData.Behaviours.Count);
             Builder builder = new(this, Behaviors);
@@ -38,9 +39,15 @@ namespace GameFramework.Actor
             _stateMachine = logicGraph;
         }
 
-        public virtual void Update(float deltaTime)
+        public void Update()
         {
-            _stateMachine.DeltaTime = deltaTime;
+            
+            _stateMachine.DeltaTime = World.DeltaTime;
+            Behaviors.ForEach( b =>
+            {
+                Behaviour behaviour = (Behaviour) b;  
+                behaviour.Update(World.DeltaTime);
+            });
             _stateMachine.Execute();
         }
     }

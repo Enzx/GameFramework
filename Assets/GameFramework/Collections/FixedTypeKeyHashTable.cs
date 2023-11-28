@@ -108,5 +108,18 @@ namespace GameFramework.Collections
             value = default;
             return false;
         }
+        
+        public void ForEach(Action<TValue> action)
+        {
+            foreach (var buckets in table)
+            {
+                if (buckets == null) continue;
+
+                for (int i = 0; i < buckets.Length; i++)
+                {
+                    action(buckets[i].Value);
+                }
+            }
+        }
    }
 }

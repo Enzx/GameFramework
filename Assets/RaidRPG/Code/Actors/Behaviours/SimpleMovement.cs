@@ -18,7 +18,7 @@ namespace RaidRPG
         {
             _data = data;
             _rigidbody = actor.View.GetComponent<Rigidbody2D>();
-            actor.Events.Subscribe<InputMessage>(OnInputMessageReceived);
+          //  actor.Events.Subscribe<InputMessage>(OnInputMessageReceived);
         }
 
         private void OnInputMessageReceived(InputMessage message)

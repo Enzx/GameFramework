@@ -13,7 +13,7 @@ namespace GameFramework.Graph
         public StateMachine(State initialState)
         {
             _graph = new Graph(initialState);
-            _initialState = initialState.Id;
+            _initialState = initialState.Key;
             _currentState = _initialState;
         }
 
@@ -27,9 +27,9 @@ namespace GameFramework.Graph
             _graph.AddNode(condition);
         }
 
-        public void AddTransition(NodeId from, NodeId to)
+        public void AddTransition(Node from, Node to)
         {
-            _graph.AddTransition(from, to);
+            _graph.AddTransition(from.Key, to.Key);
         }
         
 
@@ -86,6 +86,12 @@ namespace GameFramework.Graph
         {
             base.AddState(state);
             SetAgent(state);
+        }
+        
+        public void AddCondition(Condition<TAgent> condition)
+        {
+            base.AddCondition(condition);
+            condition.SetAgent(_agent);
         }
         
     }

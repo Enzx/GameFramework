@@ -375,6 +375,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: e85d115b7a580244688ecf196aa7b16f, type: 2}
+  _gameplay:
+    EnemyPrefab: {fileID: 2893388851494774494, guid: 906d76c428bdd8b40b0507afa7b8311e, type: 3}
+    WaveDistance: 10
+    MaxWave: 3
 --- !u!4 &1082818283
 Transform:
   m_ObjectHideFlags: 0

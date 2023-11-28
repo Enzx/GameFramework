@@ -15,16 +15,19 @@ namespace GameFramework.Graph
             _startNode = startNode;
 
             _transitions = new List<Transition>();
-            _nodes = new Dictionary<NodeId, Node> { { _startNode.Id, _startNode } };
+            _nodes = new Dictionary<NodeId, Node> { { _startNode.Key, _startNode } };
         }
 
 
         public void AddNode(Node node)
         {
-            _nodes.Add(node.Id, node);
+            if(_nodes.ContainsKey(node.Key))
+            {
+                throw new Exception($"Node ({node.GetType()}) already exists");
+            }
+            _nodes.Add(node.Key, node);
         }
 
-//Create a transition from a node to another and store it
         public void AddTransition(NodeId from, NodeId to)
         {
             Transition transition = new(from, to);

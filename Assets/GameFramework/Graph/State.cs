@@ -63,6 +63,7 @@ namespace GameFramework.Graph
         {
             _status = Status.Enter;
             _result = Result.None;
+            _actions.ForEach(action => action.Execute());
             OnEnter();
             _status = Status.Update;
         }

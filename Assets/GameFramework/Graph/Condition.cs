@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace GameFramework.Graph
 {
-    public  class Condition : Node
+    public abstract  class Condition : Node
     {
         public ExecuteMode ExecuteMode;
         private List<ConditionTask> _conditions;
         private Result _result;
 
-        public Condition()
+        protected Condition()
         {
             _conditions = new List<ConditionTask>();
         }
@@ -23,6 +23,8 @@ namespace GameFramework.Graph
                 ExecuteMode.Sequence => Sequence(),
                 _ => throw new ArgumentOutOfRangeException()
             };
+            
+            success = Check() && success;
 
             Finish(success);
             return _result;
@@ -63,6 +65,18 @@ namespace GameFramework.Graph
             }
 
             return success;
+        }
+        
+        protected virtual bool Check() { return true; }
+    }
+    
+    public abstract class Condition<T> : Condition
+    {
+        protected T Agent;
+        
+        public void SetAgent(T agent)
+        {
+            Agent = agent;
         }
     }
 }
