@@ -6,20 +6,18 @@ namespace RaidRPG
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private Enemy _enemyPrefab;
-        [SerializeField] private float _spawnRate = 2f;
         [SerializeField] private int _maxWave = 3;
         [SerializeField] private float _waveDistance = 5f;
 
         private Player _player;
-        private List<Enemy> _enemies = new();
-        private Dictionary<int, int> _waves = new();
+        private readonly List<Enemy> _enemies = new();
+        private readonly Dictionary<int, int> _waves = new();
         private int _currentWave = 0;
         private bool _finished;
 
         private void Awake()
         {
             _player = FindObjectOfType<Player>();
-            //Populate wave dictionary
             PopulateWave();
             _currentWave = 0;
             _finished = false;
@@ -27,8 +25,8 @@ namespace RaidRPG
 
         private void Update()
         {
-           if(_finished) return;
-           
+            if (_finished) return;
+
             //Iterate on enemy list and remove dead enemies, if list is empty spawn next wave
             for (int i = _enemies.Count - 1; i >= 0; i--)
             {
@@ -58,10 +56,7 @@ namespace RaidRPG
 
                 //Increment current wave index
                 _currentWave++;
-              
             }
-
-           
         }
 
         //Spawn enemy at random position on a circle around player with random speed with a min distance from player
@@ -104,7 +99,7 @@ namespace RaidRPG
 
 
         //Get random position on a circle around center with a distance
-        private Vector2 RandomCircle(Vector3 center, float distance)
+        private static Vector2 RandomCircle(Vector3 center, float distance)
         {
             // create random angle between 0 to 360 degrees 
             float ang = Random.value * 360;
