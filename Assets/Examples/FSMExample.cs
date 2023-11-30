@@ -7,12 +7,18 @@ namespace Examples
 {
     public class Door
     {
-        private class Open : State
+        private class Open : State<Door>
         {
             private float _elapsed;
+
+            public Open(Door door) : base(door)
+            {
+
+            }
+
             protected override void OnEnter()
             {
-                Debug.Log("Door is Open");
+                Debug.Log( $"{Agent._name}:Open:Enter()");
                 _elapsed = 0;
             }
 
@@ -28,17 +34,21 @@ namespace Examples
 
             protected override void OnExit()
             {
-                Debug.Log("Door is Open:Exit()");
 
             }
         }
 
-        private class Close : State
+        private class Close : State<Door>
         {
             private float _elapsed;
+
+            public Close(Door door) : base(door)
+            {
+
+            }
             protected override void OnEnter()
             {
-                Debug.Log("Door:Close:Enter()");
+                Debug.Log($"{Agent._name}:Close:Enter()");
                 _elapsed = 0;
             }
 
@@ -54,17 +64,20 @@ namespace Examples
 
             protected override void OnExit()
             {
-                Debug.Log("Door is Close:Exit()");
 
             }
         }
 
         public StateMachine FSM;
-        
+
+        private string _name = "DOOR";
+
+        public bool locked;
+
         public Door()
         {
-            Open openState = new Open();
-            Close closeState = new Close();
+            Open openState = new Open(this);
+            Close closeState = new Close(this);
             openState.Transition = new Transition() { From = openState, To = closeState };
             closeState.Transition = new Transition() { From = closeState, To = openState };
             FSM = new StateMachine(openState);
@@ -199,6 +212,27 @@ namespace Examples
     public abstract class Condition
     {
         public abstract bool Check();
+    }
+
+
+    public class StateMachine<TAgent> : StateMachine
+    {
+        protected TAgent Agent;
+        public StateMachine(State init, TAgent agent) : base(init)
+        {
+            Agent = agent;
+        }
+    }
+
+    public abstract class State<TAgent> : State
+    {
+        protected TAgent Agent;
+
+        public State(TAgent agent)
+        {
+            Agent = agent;
+        }
+
     }
 }
 

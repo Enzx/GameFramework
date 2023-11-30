@@ -16,6 +16,7 @@ namespace RaidRPG
         public override void Update(float deltaTime)
         {
             InputMessage message = default;
+
             message.MoveDirection.x = Input.GetAxis(_data.HorizontalAxis);
             message.MoveDirection.y = Input.GetAxis(_data.VerticalAxis);
             message.MouseWorldPosition = Actor.World.Camera.ScreenToWorldPoint(Input.mousePosition);
