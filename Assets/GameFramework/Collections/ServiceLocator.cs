@@ -18,6 +18,7 @@ namespace GameFramework.Collections
 
         private void Register(Type type, TType instance)
         {
+            UnityEngine.Debug.Log(type.Name);
             _behaviours.Add(type, instance);
         }
     
