@@ -5,22 +5,19 @@ namespace GameFramework.Graph
 {
     public struct NodeId
     {
-        public SerializableGuid Id ;
+        public SerializableGuid Id;
     }
 
     //Serializable GUID struct
     [Serializable]
     public struct SerializableGuid
     {
-        [SerializeField] private byte[] guidBytes;
+        [SerializeField] private byte[] _guidBytes;
 
         public SerializableGuid(Guid guid)
         {
-            guidBytes = guid.ToByteArray();
-            
+            _guidBytes = guid.ToByteArray();
         }
-        
-
         
         public static SerializableGuid NewGuid()
         {
@@ -29,7 +26,7 @@ namespace GameFramework.Graph
 
         public Guid ToGuid()
         {
-            return new Guid(guidBytes);
+            return new Guid(_guidBytes);
         }
 
         public static implicit operator Guid(SerializableGuid serializableGuid)
@@ -49,8 +46,10 @@ namespace GameFramework.Graph
                 const int p = 16777619;
                 int hash = (int)2166136261;
 
-                for (int i = 0; i < guidBytes.Length; i++)
-                    hash = (hash ^ guidBytes[i]) * p;
+                for (int i = 0; i < _guidBytes.Length; i++)
+                {
+                    hash = (hash ^ _guidBytes[i]) * p;
+                }
 
                 return hash;
             }

@@ -1,18 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 // ReSharper disable Unity.PerformanceCriticalCodeInvocation
 
 namespace GameFramework.Messaging
 {
-    public class Events
+    public sealed class Events : IDisposable
     {
-        private readonly Dictionary<Type, IPublisher> _brokers;
-
-        public Events()
-        {
-            _brokers = new Dictionary<Type, IPublisher>(10);
-        }
+        private readonly ConcurrentDictionary<Type, IPublisher> _brokers = new(4, 10);
 
         public bool Publish<TMessage>(TMessage message)
         {
@@ -22,23 +18,50 @@ namespace GameFramework.Messaging
                 templatePublisher.Publish(message);
                 return true;
             }
+
             publisher.Publish(message);
             return true;
         }
 
-        public void Subscribe<TMessage>(Action<TMessage> handler)
+        public IDisposable Subscribe<TMessage>(in IHandler<TMessage> handler)
         {
-            if (_brokers.TryGetValue(typeof(TMessage), out IPublisher pub))
+            IPublisher broker = _brokers.GetOrAdd(typeof(TMessage), _ => new Broker<TMessage>());
+            if (broker is Broker<TMessage> templateBroker)
             {
-                Broker<TMessage> broker = (Broker<TMessage>)pub;
-                broker.Subscribe(handler);
+                return templateBroker.Subscribe(handler);
             }
-            else
+
+            throw new InvalidOperationException(
+                "Cannot subscribe to a message type that is not of the same type as the broker");
+        }
+        
+        // Extension method for Events class
+        public IDisposable Subscribe<TMessage>(Action<TMessage> action)
+        {
+            return Subscribe(new Handler<TMessage>(action, null));
+        }
+
+        // Extension method for Events class
+        public IDisposable Subscribe<T>(Action<T> action, Filter<T> filter)
+        {
+            return Subscribe(new Handler<T>(action, filter));
+        }
+        
+        // Subscribe with 
+        public IDisposable Subscribe<TMessage>(Action<TMessage> action, params Filter<TMessage>[] filters)
+        {
+            return Subscribe(new Handler<TMessage>(action, new CompositeFilter<TMessage,Filter<TMessage>>(filters)));
+        }
+
+
+        public void Dispose()
+        {
+            foreach (KeyValuePair<Type, IPublisher> broker in _brokers)
             {
-                Broker<TMessage> broker = new();
-                broker.Subscribe(handler);
-                _brokers.Add(typeof(TMessage), broker);
+                IDisposable disposable = broker.Value as IDisposable;
+                disposable?.Dispose();
             }
         }
+        
     }
 }

@@ -4,8 +4,8 @@
     {
         void Publish(object obj);
     }
-    public interface IPublisher<T> : IPublisher
+    public interface IPublisher<in TMessage> : IPublisher
     {
-        void Publish(T message);
+        void Publish(TMessage message);
     }
 }

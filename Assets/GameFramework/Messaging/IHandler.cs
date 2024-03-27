@@ -1,9 +1,9 @@
 ﻿namespace GameFramework.Messaging
 {
-    public interface IHandler<T>
+    public interface IHandler<in TMessage>
     {
-        void Handle(T message);
+        void Handle(TMessage message);
         void Dispose();
-        bool Filter(T message);
+        bool Filter(TMessage message);
     }
 }

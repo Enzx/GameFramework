@@ -1,7 +1,10 @@
-﻿namespace GameFramework.Messaging
+﻿using System;
+
+namespace GameFramework.Messaging
 {
-    public interface ISubscriber<T>
+    public interface ISubscriber<TMessage>
     {
-        void Subscribe(IHandler<T> message);
+        IDisposable Subscribe(IHandler<TMessage> message);
+        void Unsubscribe(IDisposable token);
     }
 }

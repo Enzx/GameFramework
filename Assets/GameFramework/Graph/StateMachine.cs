@@ -2,13 +2,11 @@
 
 namespace GameFramework.Graph
 {
-    //A data structure that represents an unique identifier for a node
-
     public class StateMachine : State
     {
-        private Graph _graph;
+        private readonly Graph _graph;
         private NodeId _currentState;
-        private NodeId _initialState;
+        private readonly NodeId _initialState;
 
         public StateMachine(State initialState)
         {
@@ -31,8 +29,6 @@ namespace GameFramework.Graph
         {
             _graph.AddTransition(from.Key, to.Key);
         }
-        
-
 
         protected override void OnEnter()
         {
@@ -67,7 +63,7 @@ namespace GameFramework.Graph
 
     public class StateMachine<TAgent> : StateMachine
     {
-        private TAgent _agent;
+        private readonly TAgent _agent;
 
         public StateMachine(TAgent agent, State initialState) : base(initialState)
         {

@@ -2,12 +2,12 @@
 
 namespace GameFramework.Messaging
 {
-    public class Handler<T> : IHandler<T>, IDisposable
+    public class Handler<TMessage> : IHandler<TMessage>, IDisposable
     {
-        private Action<T> _callback;
-        private readonly Filter<T> _filter;
-
-        public Handler(Action<T> callback, Filter<T> filter)
+        private Action<TMessage> _callback;
+        private readonly Filter<TMessage> _filter;
+        
+        public Handler(Action<TMessage> callback, Filter<TMessage> filter)
         {
             _callback = callback;
             _filter = filter;
@@ -18,13 +18,14 @@ namespace GameFramework.Messaging
             _callback = null;
         }
 
-        public bool Filter(T message)
+        public bool Filter(TMessage message)
         {
             return _filter == default || _filter.Apply(message);
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        public void Handle(T message)
+
+        public void Handle(TMessage message)
         {
             _callback(message);
         }

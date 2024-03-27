@@ -4,14 +4,16 @@ namespace GameFramework.Messaging
 {
     public static class HandlerExtensions
     {
-        public static void Subscribe<T>(this ISubscriber<T> subscriber, Action<T> action)
+        public static IDisposable Subscribe<TMessage>(this ISubscriber<TMessage> subscriber, Action<TMessage> action)
         {
-            subscriber.Subscribe(new Handler<T>(action, null));
+            return subscriber.Subscribe(new Handler<TMessage>(action, null));
         }
 
-        public static void Subscribe<T>(this ISubscriber<T> subscriber, Action<T> action, Filter<T> filter)
+        public static IDisposable Subscribe<T>(this ISubscriber<T> subscriber, Action<T> action, Filter<T> filter)
         {
-            subscriber.Subscribe(new Handler<T>(action, filter));
+            return subscriber.Subscribe(new Handler<T>(action, filter));
         }
+
+       
     }
 }

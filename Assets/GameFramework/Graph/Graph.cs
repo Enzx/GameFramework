@@ -21,11 +21,10 @@ namespace GameFramework.Graph
 
         public void AddNode(Node node)
         {
-            if(_nodes.ContainsKey(node.Key))
+            if(_nodes.TryAdd(node.Key, node) == false)
             {
                 throw new Exception($"Node ({node.GetType()}) already exists");
             }
-            _nodes.Add(node.Key, node);
         }
 
         public void AddTransition(NodeId from, NodeId to)
