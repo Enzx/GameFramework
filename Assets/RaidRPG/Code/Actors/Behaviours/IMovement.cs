@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace RaidRPG
 {
-    public interface IMovement : IBehaviour
+    public interface IDash : IBehaviour
     {
-        void Move(Vector2 direction);
+        void Dash(Vector2 direction);
     }
 }

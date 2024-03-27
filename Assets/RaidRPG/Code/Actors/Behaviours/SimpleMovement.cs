@@ -6,8 +6,8 @@ using Behaviour = GameFramework.Actor.Behaviours.Behaviour;
 
 namespace RaidRPG
 {
-   
-    
+
+
     public class SimpleMovement : Behaviour, IMovement
     {
         private readonly Rigidbody2D _rigidbody;
@@ -39,4 +39,7 @@ namespace RaidRPG
             _direction = Vector2.zero;
         }
     }
+
+
+
 }
