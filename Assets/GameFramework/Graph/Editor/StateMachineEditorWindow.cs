@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameFramework.Graph;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Behaviour = GameFramework.Actor.Behaviours.Behaviour;
-using Node = UnityEditor.Experimental.GraphView.Node;
 
 
-namespace GameFramework.Editor
+namespace GameFramework.Graph.Editor
 {
     public class StateMachineEditorWindow : EditorWindow
     {
+        public VisualTreeAsset mainUI;
+
         //Create a new window
         [MenuItem("Window/State Machine Editor")]
         public static void OpenWindow()
@@ -21,13 +20,8 @@ namespace GameFramework.Editor
             StateMachineEditorWindow window = GetWindow<StateMachineEditorWindow>();
             //Set a title for the window
             window.titleContent = new GUIContent("State Machine Editor");
-            //Create a new state machine graph
-            StateMachineGraph graphView = new StateMachineGraph();
-            //Add the graph view to the window
-            window.rootVisualElement.Add(graphView);
-            graphView.StretchToParentSize();
-            //Initialize the graph view
-            graphView.Init(window);
+            window.rootVisualElement.Add(window.mainUI.Instantiate());
+            
         }
     }
 
@@ -35,6 +29,9 @@ namespace GameFramework.Editor
     public class StateMachineGraph : GraphView
     {
         StateMachineEditorWindow _window;
+        //Expose StateMachineGraph uxml
+        public new class UxmlFactory : UxmlFactory<StateMachineGraph> {}
+
 
         //Create a new graph view
         public StateMachineGraph()
@@ -47,7 +44,7 @@ namespace GameFramework.Editor
             //Set the window
             _window = window;
             //Create a grid background
-            GridBackground gridBackground = new GridBackground();
+            GridBackground gridBackground = new();
             //Add the grid background to the graph view
             Insert(0, gridBackground);
             //Set the grid background to the graph view
@@ -124,7 +121,7 @@ namespace GameFramework.Editor
         }
     }
 
-    internal class StateNode : Node
+    internal class StateNode : UnityEditor.Experimental.GraphView.Node
     {
         private readonly State _state;
 

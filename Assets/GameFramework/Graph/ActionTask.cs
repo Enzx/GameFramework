@@ -1,10 +1,12 @@
-﻿namespace GameFramework.Graph
+﻿using UnityEngine;
+
+namespace GameFramework.Graph
 {
-    public abstract class ActionTask
+    public abstract class ActionTask : ScriptableObject
     {
         public string ErrorMessage { get; private set; }
 
-        protected virtual void ReportError(string message, object context = null)
+        public virtual void ReportError(string message, object context = null)
         {
             ErrorMessage = context != null ? $"{context}: {message}" : $"{message}";
         }
@@ -31,7 +33,7 @@
             Agent = agent;
         }
 
-        protected override void ReportError(string message, object context = null)
+        public override void ReportError(string message, object context = null)
         {
             base.ReportError(message, Agent);
         }

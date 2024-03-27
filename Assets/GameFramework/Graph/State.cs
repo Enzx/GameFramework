@@ -9,8 +9,7 @@ namespace GameFramework.Graph
 
         public override void AddAction(ActionTask action)
         {
-            ActionTask<TAgent> agentAction = action as ActionTask<TAgent>;
-            if (agentAction == null)
+            if (action is not ActionTask<TAgent> agentAction)
             {
                 throw new ArgumentException($"Action {action} is not of type {typeof(TAgent)}");
             }

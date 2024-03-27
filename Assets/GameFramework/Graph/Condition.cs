@@ -6,7 +6,7 @@ namespace GameFramework.Graph
     public abstract  class Condition : Node
     {
         public ExecuteMode ExecuteMode;
-        private List<ConditionTask> _conditions;
+        private readonly List<ConditionTask> _conditions;
         private Result _result;
 
         protected Condition()
