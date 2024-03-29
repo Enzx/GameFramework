@@ -21,9 +21,9 @@ public class World : MonoBehaviour, IWorld
         Camera = Camera.main;
         ActorFactory.Init();
         _player = ActorFactory.Create(_playerData, this);
-        PlayerActiveState playerActiveState = new();
+        PlayerActiveState playerActiveState = new(StateData.Default);
         StateMachine<Actor> stateMachine = new(_player, playerActiveState);
-        playerActiveState.AddAction(new BindInputAction());
+        playerActiveState.AddAction(ScriptableObject.CreateInstance<BindInputAction>());
         _player.SetLogicGraph(stateMachine);
 
         //What's the correct way to do this?

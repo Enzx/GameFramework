@@ -1,5 +1,8 @@
-﻿namespace GameFramework.Graph
+﻿using System;
+
+namespace GameFramework.Graph
 {
+    [Serializable]
     public struct Transition
     {
         public readonly NodeId Source;

@@ -9,10 +9,12 @@ namespace GameFramework.Graph
         private readonly List<ConditionTask> _conditions;
         private Result _result;
 
-        protected Condition()
+        protected Condition(ConditionData data) : base(data)
         {
-            _conditions = new List<ConditionTask>();
+            _conditions = data.Conditions;
+            ExecuteMode = data.ExecuteMode;
         }
+
 
         public override Result Execute()
         {
@@ -74,9 +76,14 @@ namespace GameFramework.Graph
     {
         protected T Agent;
         
+        protected Condition(ConditionData data) : base(data)
+        {
+        }
         public void SetAgent(T agent)
         {
             Agent = agent;
         }
+
+      
     }
 }

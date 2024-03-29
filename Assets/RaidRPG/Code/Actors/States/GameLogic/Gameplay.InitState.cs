@@ -21,6 +21,10 @@ namespace RaidRPG.Actors.States.GameLogic
             protected override void OnExit()
             {
             }
+
+            public InitState(StateData data) : base(data)
+            {
+            }
         }
     }
 }

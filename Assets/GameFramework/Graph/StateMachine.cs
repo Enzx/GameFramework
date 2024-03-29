@@ -8,7 +8,7 @@ namespace GameFramework.Graph
         private NodeId _currentState;
         private readonly NodeId _initialState;
 
-        public StateMachine(State initialState)
+        public StateMachine(State initialState, StateMachineData data = null) : base(data)
         {
             _graph = new Graph(initialState);
             _initialState = initialState.Key;
@@ -19,7 +19,7 @@ namespace GameFramework.Graph
         {
             _graph.AddNode(state);
         }
-        
+
         public void AddCondition(Condition condition)
         {
             _graph.AddNode(condition);
@@ -57,7 +57,6 @@ namespace GameFramework.Graph
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
     }
 
 
@@ -83,12 +82,11 @@ namespace GameFramework.Graph
             base.AddState(state);
             SetAgent(state);
         }
-        
+
         public void AddCondition(Condition<TAgent> condition)
         {
             base.AddCondition(condition);
             condition.SetAgent(_agent);
         }
-        
     }
 }

@@ -7,6 +7,9 @@ namespace GameFramework.Graph
     {
         protected TAgent Agent;
 
+        protected State(StateData data) : base(data)
+        {
+        }
         public override void AddAction(ActionTask action)
         {
             if (action is not ActionTask<TAgent> agentAction)
@@ -23,14 +26,21 @@ namespace GameFramework.Graph
         {
             Agent = agent;
         }
+
+        
     }
 
     public class State : Node
     {
         private Status _status;
         private Result _result;
-        private List<ActionTask> _actions = new();
         public float DeltaTime;
+        private List<ActionTask> _actions;
+        
+        public State(StateData data) : base(data)
+        {
+            _actions = data.Actions;
+        }
 
         public virtual void AddAction(ActionTask action)
         {
@@ -95,5 +105,7 @@ namespace GameFramework.Graph
             _result = success ? Result.Success : Result.Failure;
             _status = Status.Exit;
         }
+
+     
     }
 }

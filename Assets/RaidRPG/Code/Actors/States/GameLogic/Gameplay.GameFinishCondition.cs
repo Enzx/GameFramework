@@ -10,6 +10,10 @@ namespace RaidRPG.Actors.States.GameLogic
             {
                 return Agent._enemies.Count == 0 && Agent._currentWave >= Agent.MaxWave;
             }
+
+            public GameFinishCondition(ConditionData data) : base(data)
+            {
+            }
         }
     }
 }

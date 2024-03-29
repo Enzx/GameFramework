@@ -1,8 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <uie:Toolbar>
-        <uie:ToolbarMenu tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true">
-            <uie:ToolbarPopupSearchField focusable="true" />
-        </uie:ToolbarMenu>
-    </uie:Toolbar>
-    <GameFramework.Graph.Editor.StateMachineGraph focusable="true" style="align-self: stretch; justify-content: space-between; flex-grow: 1; align-items: flex-start;" />
-</ui:UXML>

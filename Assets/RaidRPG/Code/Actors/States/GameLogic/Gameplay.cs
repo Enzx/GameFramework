@@ -20,10 +20,10 @@ namespace RaidRPG.Actors.States.GameLogic
         public Gameplay()
         {
             _enemies = new List<Enemy>();
-            InitState initState = new();
-            SpawnState spawnState = new();
-            GameFinishCondition finishCondition = new();
-            FinishState finishState = new();
+            InitState initState = new(StateData.Default);
+            SpawnState spawnState = new(StateData.Default);
+            GameFinishCondition finishCondition = new(ConditionData.Default);
+            FinishState finishState = new(StateData.Default);
 
             _stateMachine = new StateMachine<Gameplay>(this, initState);
             _stateMachine.AddState(spawnState);
