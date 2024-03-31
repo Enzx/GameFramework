@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <uie:Toolbar>
-        <uie:ToolbarMenu tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+        <uie:ToolbarMenu tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" style="width: 20px; min-width: 20px;" />
+        <ui:Label tabindex="-1" text="state_machine_name" parse-escape-sequences="false" display-tooltip-when-elided="true" name="graph-name-label" binding-path="GraphData.m_Name" enable-rich-text="false" style="flex-direction: column; -unity-text-align: middle-left; text-overflow: ellipsis; max-width: 250px; padding-left: 2px; overflow: hidden;" />
         <uie:ToolbarSpacer style="flex-direction: row; flex-grow: 1;" />
         <uie:ToolbarPopupSearchField focusable="true" />
     </uie:Toolbar>

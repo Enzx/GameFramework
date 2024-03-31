@@ -19,23 +19,37 @@ namespace GameFramework.Graph.Editor
         private Label _titleLabel;
         private TextField _renameTextField = new() { name = "rename-textField", isDelayed = true };
 
+        public override string title
+        {
+            get => base.title;
+            set
+            {
+                Data.name = value;
+                base.title = value;
+            }
+        }
+
 
         protected BaseNode(NodeData data)
         {
             Data = data;
-            focusable = true;
-            pickingMode = PickingMode.Position;
-            capabilities |= Capabilities.Renamable |
-                            Capabilities.Deletable |
-                            Capabilities.Copiable |
-                            Capabilities.Movable;
-
+            SetAttributes();
             AddPorts();
-
             SetupRenameTextEditor();
 
             RegisterCallback<KeyDownEvent>(OnKeyDownEvent, TrickleDown.TrickleDown);
             titleContainer.RegisterCallback<MouseDownEvent>(MouseRename, TrickleDown.TrickleDown);
+        }
+
+        private void SetAttributes()
+        {
+            focusable = true;
+            pickingMode = PickingMode.Position;
+            capabilities |=
+                Capabilities.Renamable |
+                Capabilities.Deletable |
+                Capabilities.Copiable |
+                Capabilities.Movable;
         }
 
         void SetupRenameTextEditor()
@@ -112,16 +126,19 @@ namespace GameFramework.Graph.Editor
                 _titleLabel.style.display = DisplayStyle.Flex;
                 titleContainer.Remove(_renameTextField);
                 title = _renameTextField.value;
+                Data.name = title;
             });
-            return;
         }
     }
 
     public class StateNode : BaseNode
     {
+        private readonly StateData _data;
+
         public StateNode(StateData data) : base(data)
         {
-            data.Actions = new List<ActionTask> { ScriptableObject.CreateInstance<PrintInfoAction>() };
+            _data = data;
+            _data.Actions = new List<ActionTask> { ScriptableObject.CreateInstance<PrintInfoAction>() };
         }
     }
 }
