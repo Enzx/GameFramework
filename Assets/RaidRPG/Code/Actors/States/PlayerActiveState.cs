@@ -22,9 +22,5 @@ namespace RaidRPG.Actors.States
         {
 
         }
-
-        public PlayerActiveState(StateData data) : base(data)
-        {
-        }
     }
 }

@@ -12,27 +12,27 @@ namespace RaidRPG.Actors.States.GameLogic
         public float WaveDistance;
         public int MaxWave;
         private int _currentWave;
-        private readonly List<Enemy> _enemies;
+        private  List<Enemy> _enemies;
         [NonSerialized] public Transform PlayerTransform;
 
         private StateMachine<Gameplay> _stateMachine;
 
-        public Gameplay()
+        public void  Init()
         {
             _enemies = new List<Enemy>();
-            InitState initState = new(StateData.Default);
-            SpawnState spawnState = new(StateData.Default);
-            GameFinishCondition finishCondition = new(ConditionData.Default);
-            FinishState finishState = new(StateData.Default);
+            InitState initState = new();
+            SpawnState spawnState = new();
+            GameFinishCondition finishCondition = new();
+            FinishState finishState = new();
 
-            _stateMachine = new StateMachine<Gameplay>(this, initState);
-            _stateMachine.AddState(spawnState);
-            _stateMachine.AddState(finishState);
-            _stateMachine.AddCondition(finishCondition);
+            Graph graph = new(initState);
+            graph
+                .ConnectTo(spawnState)
+                .ConnectTo(finishCondition)
+                .ConnectTo(finishState)
+                .SetAgent(this);
 
-            _stateMachine.AddTransition(initState, spawnState);
-            _stateMachine.AddTransition(spawnState, finishCondition);
-            _stateMachine.AddTransition(finishCondition, finishState);
+            _stateMachine = new StateMachine<Gameplay>(graph);
         }
 
         public void Update(float deltaTime)

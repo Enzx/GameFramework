@@ -2,6 +2,7 @@
 using GameFramework.Actor.Behaviours;
 using GameFramework.Actor.DataModel;
 using GameFramework.Collections;
+using GameFramework.DataModel;
 
 namespace GameFramework.Actor
 {
@@ -16,7 +17,7 @@ namespace GameFramework.Actor
         }
     
 
-        public IBehaviour Visit<TBehavior>(IData data)
+        public IObject Visit<TBehavior>(IData data)
         {
             Type dataType = typeof(TBehavior);
             IBehaviour behaviour = (IBehaviour)Activator.CreateInstance(dataType, _agent, data);
@@ -24,9 +25,9 @@ namespace GameFramework.Actor
             return behaviour;
         }
 
-        public IBehaviour Visit<TBehavior, TInterface>(IData data)
+        public IObject Visit<TBehavior, TInterface>(IData data)
         {
-            IBehaviour behaviour = Visit<TBehavior>(data);
+            IBehaviour behaviour = (IBehaviour)Visit<TBehavior>(data);
             _serviceLocator.Register<TInterface>(behaviour);
             return behaviour;
         }

@@ -3,43 +3,80 @@ using System.Collections.Generic;
 
 namespace GameFramework.Graph
 {
+    public class GraphData : NodeData
+    {
+        public NodeData StartNodeData;
+        public List<NodeData> NodesData = new();
+        public List<Transition> Transitions = new();
+            
+    }
+    
     public class Graph
     {
         //Transitions are edges between nodes
-        private List<Transition> _transitions;
-        private Dictionary<NodeId, Node> _nodes;
-        private Node _startNode;
+        public readonly List<Transition> Transitions;
+        public readonly Dictionary<NodeId, Node> Nodes;
+
+        public readonly  Node StartNode;
+        
+        private NodeId _lastAddedNode;
 
         public Graph(Node startNode)
         {
-            _startNode = startNode;
-
-            _transitions = new List<Transition>();
-            _nodes = new Dictionary<NodeId, Node> { { _startNode.Key, _startNode } };
+            StartNode = startNode;
+            _lastAddedNode = startNode.Key;
+            Transitions = new List<Transition>();
+            Nodes = new Dictionary<NodeId, Node> { { startNode.Key, startNode } };
+        }
+        
+        public void SetAgent<TAgent>(TAgent agent)
+        {
+            foreach (KeyValuePair<NodeId, Node> pair in Nodes)
+            {
+                if (pair.Value is IAGentSettable<TAgent> agentSettable)
+                {
+                    agentSettable.SetAgent(agent);
+                }
+            }
         }
 
 
         public void AddNode(Node node)
         {
-            if(_nodes.TryAdd(node.Key, node) == false)
+            if(Nodes.TryAdd(node.Key, node) == false)
             {
                 throw new Exception($"Node ({node.GetType()}) already exists");
             }
         }
 
+        public Graph ConnectTo(Node node)
+        {
+            AddNode(node);
+            AddTransition(_lastAddedNode, node.Key);
+            _lastAddedNode = node.Key;
+            return this;
+        }
+
         public void AddTransition(NodeId from, NodeId to)
         {
             Transition transition = new(from, to);
-            _transitions.Add(transition);
+            Transitions.Add(transition);
         }
 
-        public Node this[NodeId currentState] => _nodes[currentState];
+ 
+
+        public void AddTransitions(IEnumerable<Transition> transitions)
+        {
+            Transitions.AddRange(transitions);
+        }
+
+        public Node this[NodeId currentState] => Nodes[currentState];
 
         public Transition GetTransition(NodeId currentState)
         {
-            for (int index = 0; index < _transitions.Count; index++)
+            for (int index = 0; index < Transitions.Count; index++)
             {
-                Transition transition = _transitions[index];
+                Transition transition = Transitions[index];
                 if (transition.Source.Equals(currentState))
                 {
                     return transition;
@@ -49,4 +86,7 @@ namespace GameFramework.Graph
             throw new Exception("Transition not found");
         }
     }
+    
+    
+    
 }

@@ -1,10 +1,30 @@
 ﻿using System;
-using UnityEngine;
+using GameFramework.DataModel;
 
 namespace GameFramework.Graph
 {
-    public class NodeData : ScriptableObject
+    public class NodeData : ObjectData
     {
-        public NodeId Key = new() { Id = SerializableGuid.NewGuid() };
+        private void Awake()
+        {
+            Key = new NodeId { Id = SerializableGuid.NewGuid() };
+        }
+
+        public NodeId Key;
+
+        public override IObject Accept(IDataVisitor dataVisitor)
+        {
+            return dataVisitor.Visit<Node>(this);
+        }
+
+        public static NodeData Create<TData>() where TData : NodeData
+        {
+            return CreateInstance<TData>();
+        }
+
+        public static NodeData Create(Type type)
+        {
+            return (NodeData)CreateInstance(type);
+        }
     }
 }

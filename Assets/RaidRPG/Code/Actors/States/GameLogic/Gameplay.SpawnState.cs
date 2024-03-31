@@ -91,10 +91,7 @@ namespace RaidRPG.Actors.States.GameLogic
                 pos.y = center.y + distance * Mathf.Cos(ang * Mathf.Deg2Rad);
                 return pos;
             }
-
-            public SpawnState(StateData data) : base(data)
-            {
-            }
+            
         }
     }
 }

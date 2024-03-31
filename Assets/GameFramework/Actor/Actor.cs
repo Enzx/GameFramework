@@ -2,6 +2,7 @@
 using GameFramework.Actor.DataModel;
 using GameFramework.Actor.View;
 using GameFramework.Collections;
+using GameFramework.DataModel;
 using GameFramework.Graph;
 using GameFramework.Messaging;
 

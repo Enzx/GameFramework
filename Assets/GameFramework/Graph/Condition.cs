@@ -8,11 +8,20 @@ namespace GameFramework.Graph
         public ExecuteMode ExecuteMode;
         private readonly List<ConditionTask> _conditions;
         private Result _result;
-
-        protected Condition(ConditionData data) : base(data)
+        
+        protected Condition(ConditionData data = default) : base(data)
         {
-            _conditions = data.Conditions;
-            ExecuteMode = data.ExecuteMode;
+            if (ReferenceEquals(data, null))
+            {
+                _conditions = new List<ConditionTask>();
+                ExecuteMode = ExecuteMode.Sequence;
+                
+            }
+            else
+            {
+                _conditions = data.Conditions;
+                ExecuteMode = data.ExecuteMode;
+            }
         }
 
 
@@ -76,9 +85,6 @@ namespace GameFramework.Graph
     {
         protected T Agent;
         
-        protected Condition(ConditionData data) : base(data)
-        {
-        }
         public void SetAgent(T agent)
         {
             Agent = agent;

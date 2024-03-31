@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using GameFramework.DataModel;
 
 namespace GameFramework.Graph
 {
-    public class StateMachineData : StateData
+    public class StateMachineData : GraphData
     {
-        public List<NodeData> Nodes = new();
-        public List<Transition> Transitions = new();
+        public override IObject Accept(IDataVisitor dataVisitor)
+        {
+            return dataVisitor.Visit<StateMachine>(this);
+        }
     }
 }

@@ -22,9 +22,7 @@ namespace RaidRPG.Actors.States.GameLogic
             {
             }
 
-            public InitState(StateData data) : base(data)
-            {
-            }
+   
         }
     }
 }

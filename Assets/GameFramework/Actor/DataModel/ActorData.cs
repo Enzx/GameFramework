@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameFramework.DataModel;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameFramework.DataModel;
+using UnityEngine;
 
 namespace GameFramework.Graph
 {
@@ -16,14 +17,14 @@ namespace GameFramework.Graph
             ErrorMessage = null;
         }
         
-        public virtual void Update(float deltaTime)
+        public virtual void Tick (float deltaTime)
         {
         }
 
         public abstract Result Execute();
     }
 
-    public abstract class ActionTask<TAgent> : ActionTask
+    public abstract class ActionTask<TAgent> : ActionTask, IAGentSettable<TAgent>
     {
         protected TAgent Agent;
 

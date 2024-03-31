@@ -1,6 +1,6 @@
 ﻿namespace GameFramework.Actor.Behaviours
 {
-    public interface IBehaviour
+    public interface IBehaviour : IObject
     {
     }
 }

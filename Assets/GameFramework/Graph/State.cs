@@ -3,21 +3,16 @@ using System.Collections.Generic;
 
 namespace GameFramework.Graph
 {
-    public abstract class State<TAgent> : State
+    public abstract class State<TAgent> : State, IAGentSettable<TAgent>
     {
         protected TAgent Agent;
 
-        protected State(StateData data) : base(data)
-        {
-        }
         public override void AddAction(ActionTask action)
         {
-            if (action is not ActionTask<TAgent> agentAction)
+            if (action is IAGentSettable<TAgent> agentSettable)
             {
-                throw new ArgumentException($"Action {action} is not of type {typeof(TAgent)}");
+                agentSettable.SetAgent(Agent);
             }
-
-            agentAction.SetAgent(Agent);
 
             base.AddAction(action);
         }
@@ -26,8 +21,6 @@ namespace GameFramework.Graph
         {
             Agent = agent;
         }
-
-        
     }
 
     public class State : Node
@@ -36,10 +29,10 @@ namespace GameFramework.Graph
         private Result _result;
         public float DeltaTime;
         private List<ActionTask> _actions;
-        
-        public State(StateData data) : base(data)
+
+        public State(StateData data = default) : base(data)
         {
-            _actions = data.Actions;
+            _actions = ReferenceEquals(data, null) ? new List<ActionTask>() : data.Actions;
         }
 
         public virtual void AddAction(ActionTask action)
@@ -79,7 +72,7 @@ namespace GameFramework.Graph
 
         private void Update()
         {
-            _actions.ForEach(action => action.Update(DeltaTime));
+            _actions.ForEach(action => action.Tick(DeltaTime));
             OnUpdate(DeltaTime);
         }
 
@@ -105,7 +98,5 @@ namespace GameFramework.Graph
             _result = success ? Result.Success : Result.Failure;
             _status = Status.Exit;
         }
-
-     
     }
 }

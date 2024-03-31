@@ -21,13 +21,16 @@ public class World : MonoBehaviour, IWorld
         Camera = Camera.main;
         ActorFactory.Init();
         _player = ActorFactory.Create(_playerData, this);
-        PlayerActiveState playerActiveState = new(StateData.Default);
-        StateMachine<Actor> stateMachine = new(_player, playerActiveState);
+        PlayerActiveState playerActiveState = new();
+        Graph graph = new(playerActiveState);
+        graph.SetAgent(_player);
+        StateMachine<Actor> stateMachine = new(graph);
         playerActiveState.AddAction(ScriptableObject.CreateInstance<BindInputAction>());
         _player.SetLogicGraph(stateMachine);
 
         //What's the correct way to do this?
         _gameplay.PlayerTransform = _player.View.transform;
+        _gameplay.Init();
     }
 
     private void Update()

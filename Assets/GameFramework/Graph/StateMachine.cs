@@ -1,33 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Graph
 {
     public class StateMachine : State
     {
-        private readonly Graph _graph;
+        protected readonly Graph Graph;
         private NodeId _currentState;
         private readonly NodeId _initialState;
+        
 
-        public StateMachine(State initialState, StateMachineData data = null) : base(data)
+        public StateMachine(Graph graph)
         {
-            _graph = new Graph(initialState);
-            _initialState = initialState.Key;
+            Graph = graph;
+            _initialState = graph.StartNode.Key;
             _currentState = _initialState;
-        }
-
-        public virtual void AddState(State state)
-        {
-            _graph.AddNode(state);
-        }
-
-        public void AddCondition(Condition condition)
-        {
-            _graph.AddNode(condition);
-        }
-
-        public void AddTransition(Node from, Node to)
-        {
-            _graph.AddTransition(from.Key, to.Key);
         }
 
         protected override void OnEnter()
@@ -38,13 +25,13 @@ namespace GameFramework.Graph
 
         protected override void OnUpdate(float deltaTime)
         {
-            Node node = _graph[_currentState];
+            Node node = Graph[_currentState];
             Result result = node.Execute();
             switch (result)
             {
                 case Result.Success:
                 {
-                    Transition transition = _graph.GetTransition(_currentState);
+                    Transition transition = Graph.GetTransition(_currentState);
                     _currentState = transition.Destination;
                     break;
                 }
@@ -60,33 +47,26 @@ namespace GameFramework.Graph
     }
 
 
-    public class StateMachine<TAgent> : StateMachine
+    public class StateMachine<TAgent> : StateMachine, IAGentSettable<TAgent>
     {
-        private readonly TAgent _agent;
-
-        public StateMachine(TAgent agent, State initialState) : base(initialState)
+        private TAgent _agent;
+        
+        public StateMachine(Graph graph) : base(graph)
+        {
+        }
+        
+        public void SetAgent(TAgent agent)
         {
             _agent = agent;
-            SetAgent(initialState);
+            foreach (KeyValuePair<NodeId, Node> pair in Graph.Nodes)
+            {
+                if (pair.Value is IAGentSettable<TAgent> node)
+                {
+                    node.SetAgent(agent);
+                }
+            }
         }
 
-        private void SetAgent(State state)
-        {
-            //Cast state to State<TAgent> and set agent
-            State<TAgent> stateT = (State<TAgent>)state;
-            stateT.SetAgent(_agent);
-        }
-
-        public override void AddState(State state)
-        {
-            base.AddState(state);
-            SetAgent(state);
-        }
-
-        public void AddCondition(Condition<TAgent> condition)
-        {
-            base.AddCondition(condition);
-            condition.SetAgent(_agent);
-        }
+      
     }
 }

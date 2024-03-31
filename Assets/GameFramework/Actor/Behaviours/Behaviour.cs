@@ -1,4 +1,5 @@
 ﻿using GameFramework.Actor.DataModel;
+using GameFramework.DataModel;
 
 namespace GameFramework.Actor.Behaviours
 {

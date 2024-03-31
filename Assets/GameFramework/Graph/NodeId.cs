@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFramework.Graph
@@ -6,6 +7,32 @@ namespace GameFramework.Graph
     public struct NodeId
     {
         public SerializableGuid Id;
+        
+
+        public bool Equals(NodeId other)
+        {
+            return Id.Equals(other.Id);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is NodeId other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+        
+        public static bool operator ==(NodeId a, NodeId b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(NodeId a, NodeId b)
+        {
+            return !(a == b);
+        }
     }
 
     //Serializable GUID struct

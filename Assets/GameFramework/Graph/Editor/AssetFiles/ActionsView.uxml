@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement name="container" style="flex-grow: 1;">
+        <ui:TreeView view-data-key="unity-tree-view" focusable="true" reorderable="false" show-alternating-row-backgrounds="ContentOnly" name="tree-view" />
+    </ui:VisualElement>
+</ui:UXML>
