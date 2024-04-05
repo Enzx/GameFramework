@@ -3,11 +3,12 @@
 namespace GameFramework.Graph
 {
     [Serializable]
-    public struct Transition
+    public class Transition
     {
-        public readonly NodeId Source;
-        public readonly NodeId Destination;
-
+        public NodeId Source;
+        public NodeId Destination;
+        
+        
         public Transition(NodeId from, NodeId to)
         {
             Source = from;

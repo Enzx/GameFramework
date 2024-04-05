@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameFramework.Graph
 {
     public class GraphData : NodeData
     {
-        public NodeData StartNodeData;
-        public List<NodeData> NodesData = new();
-        public List<Transition> Transitions = new();
-            
+        [SerializeReference] public NodeData StartNodeData;
+        [SerializeReference] public List<NodeData> NodesData = new();
+        [SerializeReference]  public List<Transition> Transitions = new();
     }
-    
+
     public class Graph
     {
         //Transitions are edges between nodes
         public readonly List<Transition> Transitions;
         public readonly Dictionary<NodeId, Node> Nodes;
 
-        public readonly  Node StartNode;
-        
+        public readonly Node StartNode;
+
         private NodeId _lastAddedNode;
 
         public Graph(Node startNode)
@@ -28,7 +28,7 @@ namespace GameFramework.Graph
             Transitions = new List<Transition>();
             Nodes = new Dictionary<NodeId, Node> { { startNode.Key, startNode } };
         }
-        
+
         public void SetAgent<TAgent>(TAgent agent)
         {
             foreach (KeyValuePair<NodeId, Node> pair in Nodes)
@@ -43,7 +43,7 @@ namespace GameFramework.Graph
 
         public void AddNode(Node node)
         {
-            if(Nodes.TryAdd(node.Key, node) == false)
+            if (Nodes.TryAdd(node.Key, node) == false)
             {
                 throw new Exception($"Node ({node.GetType()}) already exists");
             }
@@ -63,7 +63,6 @@ namespace GameFramework.Graph
             Transitions.Add(transition);
         }
 
- 
 
         public void AddTransitions(IEnumerable<Transition> transitions)
         {
@@ -86,7 +85,4 @@ namespace GameFramework.Graph
             throw new Exception("Transition not found");
         }
     }
-    
-    
-    
 }

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using RaidRPG.Actors.Actions;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,11 +10,12 @@ namespace GameFramework.Graph.Editor
 {
     public abstract class BaseNode : UnityEditor.Experimental.GraphView.Node
     {
+        public static event Action<BaseNode> OnNodeSelected;
         protected GraphView GraphView => _graphView ??= GetFirstAncestorOfType<GraphView>();
         protected Port InputPort;
         protected Port OutputPort;
 
-        protected readonly NodeData Data;
+        public readonly NodeData Data;
         private GraphView _graphView;
         private Label _titleLabel;
         private TextField _renameTextField = new() { name = "rename-textField", isDelayed = true };
@@ -36,6 +37,8 @@ namespace GameFramework.Graph.Editor
             SetAttributes();
             AddPorts();
             SetupRenameTextEditor();
+
+            DrawInspector();
 
             RegisterCallback<KeyDownEvent>(OnKeyDownEvent, TrickleDown.TrickleDown);
             titleContainer.RegisterCallback<MouseDownEvent>(MouseRename, TrickleDown.TrickleDown);
@@ -129,6 +132,39 @@ namespace GameFramework.Graph.Editor
                 Data.name = title;
             });
         }
+
+        // On selection of the node
+        public override void OnSelected()
+        {
+            base.OnSelected();
+            OnNodeSelected?.Invoke(this);
+        }
+
+        private void DrawInspector()
+        {
+            // Draw the inspector
+            InspectorElement inspector = new(Data);
+            Foldout foldout = new()
+            {
+                text = "Properties",
+                viewDataKey = viewDataKey + "_Properties"
+            };
+
+            ListView listView = inspector.Q<ListView>();
+            if (listView != null)
+            {
+                listView.reorderMode = ListViewReorderMode.Simple;
+                listView.showAddRemoveFooter = false;
+                listView.style.height = Length.Auto();
+                listView.style.maxHeight = Length.Auto();
+            }
+
+            foldout.Add(inspector);
+            foldout.RegisterValueChangedCallback( _ => { RefreshExpandedState(); });
+            extensionContainer.Add(foldout);
+            //foldout should expand according to the size of children
+            RefreshExpandedState();
+        }
     }
 
     public class StateNode : BaseNode
@@ -138,7 +174,7 @@ namespace GameFramework.Graph.Editor
         public StateNode(StateData data) : base(data)
         {
             _data = data;
-            _data.Actions = new List<ActionTask> { ScriptableObject.CreateInstance<PrintInfoAction>() };
+            _data.Actions = new List<ActionTask>();
         }
     }
 }

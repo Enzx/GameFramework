@@ -7,6 +7,8 @@ namespace RaidRPG.Actors.Actions
     {
         private IMovement _movement;
         private IWeapon _weapon;
+        [UnityEngine.Range(0, 10)]
+        public float Speed = 5f;
 
    
 

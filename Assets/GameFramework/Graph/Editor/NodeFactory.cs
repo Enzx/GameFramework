@@ -15,10 +15,11 @@ namespace GameFramework.Graph.Editor
             if (_nodeTypeMap.TryGetValue(nodeData.GetType(), out ConstructorInfo constructorInfo))
             {
                 return Construct(constructorInfo, nodeData);
+
             }
 
             CacheConstructorInfo(out constructorInfo, nodeData);
-            return Construct(constructorInfo, nodeData);
+           return Construct(constructorInfo, nodeData);
         }
 
         private void CacheConstructorInfo(out ConstructorInfo constructorInfo, NodeData nodeData)
@@ -38,7 +39,9 @@ namespace GameFramework.Graph.Editor
         private static BaseNode Construct(ConstructorInfo constructorInfo, NodeData nodeData)
         {
             BaseNode node = (BaseNode)constructorInfo.Invoke(new object[] { nodeData });
-            node.title = node.GetType().Name;
+            node.title = string.IsNullOrEmpty(nodeData.name) ? node.GetType().Name : nodeData.name;
+            node.viewDataKey = nodeData.Key.Id.ToString();
+
             return node;
         }
     }

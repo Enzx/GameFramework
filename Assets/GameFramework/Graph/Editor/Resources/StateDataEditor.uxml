@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:ListView focusable="true" reorderable="true" binding-path="Actions" virtualization-method="DynamicHeight" show-foldout-header="false" show-alternating-row-backgrounds="ContentOnly" name="actions-list" />
+    <ui:Button text="New Action" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+</ui:UXML>

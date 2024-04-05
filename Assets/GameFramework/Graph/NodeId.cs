@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace GameFramework.Graph
 {
+    [Serializable]
     public struct NodeId
     {
         public SerializableGuid Id;
@@ -33,6 +34,8 @@ namespace GameFramework.Graph
         {
             return !(a == b);
         }
+        
+
     }
 
     //Serializable GUID struct

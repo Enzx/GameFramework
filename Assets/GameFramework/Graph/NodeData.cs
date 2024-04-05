@@ -1,16 +1,21 @@
 ﻿using System;
 using GameFramework.DataModel;
+using UnityEngine;
 
 namespace GameFramework.Graph
 {
     public class NodeData : ObjectData
     {
+        [HideInInspector] public NodeId Key;
+#if UNITY_EDITOR
+        [HideInInspector] [SerializeReference] public object EditorData;
+#endif
+
         private void Awake()
         {
             Key = new NodeId { Id = SerializableGuid.NewGuid() };
         }
 
-        public NodeId Key;
 
         public override IObject Accept(IDataVisitor dataVisitor)
         {
@@ -19,12 +24,14 @@ namespace GameFramework.Graph
 
         public static NodeData Create<TData>() where TData : NodeData
         {
-            return CreateInstance<TData>();
+            return Create(typeof(TData));
         }
 
         public static NodeData Create(Type type)
         {
-            return (NodeData)CreateInstance(type);
+            NodeData data = (NodeData)CreateInstance(type);
+            data.Key = new NodeId { Id = SerializableGuid.NewGuid() };
+            return data;
         }
     }
 }
