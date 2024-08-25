@@ -60,7 +60,7 @@ namespace RaidRPG
             {
                 _isSwimming = false;
             }
-            
+
             //Convert player position to screen space and check player direction will move player out of screen
             Vector2 playerScreenPosition = _camera.WorldToScreenPoint(playerPosition);
             //Check if player direction will move player out of screen
