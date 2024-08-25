@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5314123727335407511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aff1517629246d5a71a0977ede30881, type: 3}
+  m_Name: StateNode
+  m_EditorClassIdentifier: 
+  Key:
+    Id:
+      _guidBytes: 152480f8dbb06544be56ff8b06c93ae3
+  EditorData:
+    rid: 4726245366610264068
+  Actions: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 4726245366610264068
+      type: {class: GraphNodeState, ns: GameFramework.Graph.Editor, asm: Assembly-CSharp-Editor}
+      data:
+        Position: {x: -56, y: -182}
+--- !u!114 &-4098253218908469903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aff1517629246d5a71a0977ede30881, type: 3}
+  m_Name: StateNode
+  m_EditorClassIdentifier: 
+  Key:
+    Id:
+      _guidBytes: 19d39df5b5a9c84ca8803c929922cc10
+  EditorData:
+    rid: 4726245366610264069
+  Actions: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 4726245366610264069
+      type: {class: GraphNodeState, ns: GameFramework.Graph.Editor, asm: Assembly-CSharp-Editor}
+      data:
+        Position: {x: 379, y: -133}
+--- !u!114 &-3547554449685720951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aff1517629246d5a71a0977ede30881, type: 3}
+  m_Name: 1
+  m_EditorClassIdentifier: 
+  Key:
+    Id:
+      _guidBytes: ef8282f43de18e45999e0be38c876407
+  EditorData:
+    rid: 4726245366610264070
+  Actions: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 4726245366610264070
+      type: {class: GraphNodeState, ns: GameFramework.Graph.Editor, asm: Assembly-CSharp-Editor}
+      data:
+        Position: {x: -81, y: 77}
+--- !u!114 &-730146052312660317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aff1517629246d5a71a0977ede30881, type: 3}
+  m_Name: StateNode
+  m_EditorClassIdentifier: 
+  Key:
+    Id:
+      _guidBytes: 3906bdd3e69bca43b9b19103a70cd428
+  EditorData:
+    rid: 4726245366610264071
+  Actions: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 4726245366610264071
+      type: {class: GraphNodeState, ns: GameFramework.Graph.Editor, asm: Assembly-CSharp-Editor}
+      data:
+        Position: {x: 179, y: 299}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 972c79ef29fc4e53806e0809411a86cb, type: 3}
+  m_Name: New State Machine
+  m_EditorClassIdentifier: 
+  Key:
+    Id:
+      _guidBytes: abd00db7f33b344ab234e6d4f18b91d3
+  EditorData:
+    rid: -2
+  StartNodeData: {fileID: -5314123727335407511}
+  NodesData:
+  - {fileID: -4098253218908469903}
+  - {fileID: -5314123727335407511}
+  - {fileID: -730146052312660317}
+  - {fileID: -3547554449685720951}
+  Transitions: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

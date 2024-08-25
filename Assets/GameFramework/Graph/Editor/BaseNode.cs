@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using RaidRPG.Actors.Actions;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
@@ -142,14 +141,7 @@ namespace GameFramework.Graph.Editor
 
         private void DrawInspector()
         {
-            // Draw the inspector
             InspectorElement inspector = new(Data);
-            Foldout foldout = new()
-            {
-                text = "Properties",
-                viewDataKey = viewDataKey + "_Properties"
-            };
-
             ListView listView = inspector.Q<ListView>();
             if (listView != null)
             {
@@ -158,23 +150,15 @@ namespace GameFramework.Graph.Editor
                 listView.style.height = Length.Auto();
                 listView.style.maxHeight = Length.Auto();
             }
-
+            Foldout foldout = new()
+            {
+                text = "Properties",
+                viewDataKey = viewDataKey + "_Properties"
+            };
             foldout.Add(inspector);
             foldout.RegisterValueChangedCallback( _ => { RefreshExpandedState(); });
             extensionContainer.Add(foldout);
-            //foldout should expand according to the size of children
             RefreshExpandedState();
-        }
-    }
-
-    public class StateNode : BaseNode
-    {
-        private readonly StateData _data;
-
-        public StateNode(StateData data) : base(data)
-        {
-            _data = data;
-            _data.Actions = new List<ActionTask>();
         }
     }
 }

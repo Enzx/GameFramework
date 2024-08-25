@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using RaidRPG.Actors.Actions;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace GameFramework.Graph.Editor
 {
@@ -13,55 +15,67 @@ namespace GameFramework.Graph.Editor
     {
         private StateData _stateNode;
         public VisualTreeAsset _stateDataEditorUxml;
+        
+        private List<SerializedObject> _actions = new();
 
         private void OnEnable()
         {
             _stateNode = (StateData)target;
+            if(_stateNode.Actions != null)
+                _actions = _stateNode.Actions.Select(a => new SerializedObject(a)).ToList();
         }
 
         public override VisualElement CreateInspectorGUI()
         {
-            _stateNode.Actions.Clear();
-            for (int i = 0; i < 5; i++)
-            {
-                if (i % 2 == 0)
-                    _stateNode.Actions.Add(CreateInstance<PrintInfoAction>());
-                else
-                {
-                    _stateNode.Actions.Add(CreateInstance<BindInputAction>());
-                }
-            }
-
             VisualElement root = new();
+
             _stateDataEditorUxml.CloneTree(root);
+
             ListView list = root.Q<ListView>("actions-list");
             list.makeItem = () => new VisualElement();
             list.bindItem = (e, i) =>
             {
-                FillDefaultInspector(e, new SerializedObject(_stateNode.Actions[i]));
+                if (i >= _stateNode.Actions.Count)
+                    return;
+                SerializedObject so = new(_stateNode.Actions[i]);
+                FillDefaultInspector(e, so);
                 // InspectorElement inspectorElement = new(_stateNode.Actions[i]);
-                // e.Add(inspectorElement);
+                e.Bind(so);
                 //Hide m_Script field
             };
+            list.unbindItem = (e, i)=>
+            {
+                e.Unbind();
+            };
+
+            // Button button = root.Q<Button>("new-action-button");
+            // button.RegisterCallback<ClickEvent>(_ =>
+            // {
+            //     _stateNode.Actions.Add(CreateInstance<PrintInfoAction>());
+            // });
 
             return root;
         }
 
         private static void FillDefaultInspector(VisualElement container, SerializedObject serializedObject)
         {
+            container.Clear();
             if (serializedObject == null)
                 return;
+ 
             SerializedProperty iterator = serializedObject.GetIterator();
+            Type type = serializedObject.targetObject.GetType();
+            Label label = new(ObjectNames.NicifyVariableName(type.Name));
+            container.Add(label);
+
             if (iterator.NextVisible(true))
             {
                 do
                 {
                     if (iterator.propertyPath == "m_Script")
                         continue;
-                    Type type = serializedObject.targetObject.GetType();
-                    Label label = new(ObjectNames.NicifyVariableName(type.Name));
-                    container.Add(label);
-                    
+
+
                     PropertyField propertyField = new(iterator)
                     {
                         name = "PropertyField:" + iterator.propertyPath
@@ -71,8 +85,6 @@ namespace GameFramework.Graph.Editor
                     container.Add(propertyField);
                 } while (iterator.NextVisible(false));
             }
-
-            container.Bind(serializedObject);
         }
     }
 }
